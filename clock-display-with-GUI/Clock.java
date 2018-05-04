@@ -24,7 +24,7 @@ public class Clock
      */
     public Clock()
     {
-        clock = new ClockDisplay();
+        clock = new ClockDisplay(12,0);
         makeFrame();
     }
 
