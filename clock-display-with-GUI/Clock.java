@@ -17,7 +17,8 @@ public class Clock
     private JLabel label;
     private ClockDisplay clock;
     private boolean clockRunning = false;
-    private TimerThread timerThread;
+    private TimerThread timerThread; 
+    private UpdateThread updater;
 
     /**
      * Constructor for objects of class Clock
@@ -26,6 +27,12 @@ public class Clock
     {
         clock = new ClockDisplay(12,0);
         makeFrame();
+        updater = new UpdateThread();
+        updater.start();
+    }
+
+    public ClockDisplay getClockDisplay(){
+        return clock;
     }
 
     /**
@@ -45,7 +52,7 @@ public class Clock
     {
         clockRunning = false;
     }
-    
+
     /**
      * 
      */
@@ -53,7 +60,7 @@ public class Clock
     {
         label.setText(clock.getTime());
     }
-    
+
     /**
      * 
      */
@@ -170,8 +177,17 @@ public class Clock
         item.addActionListener(e -> quit());
         menu.add(item);
     }
-
-    class TimerThread extends Thread
+    abstract class LocalThread extends Thread{
+        protected void pause()
+        {
+            try {
+                Thread.sleep(300);   // pause for 300 milliseconds
+            }
+            catch (InterruptedException exc) {
+            }
+        }
+    }
+    class TimerThread extends LocalThread
     {
         public void run()
         {
@@ -181,16 +197,17 @@ public class Clock
             }
         }
 
-        private void pause()
+    }
+    class UpdateThread extends LocalThread
+    {
+        public void run()
         {
-            try {
-                Thread.sleep(300);   // pause for 300 milliseconds
-            }
-            catch (InterruptedException exc) {
+            while (true) {
+                update();
+                pause();
             }
         }
+
     }
-    public ClockDisplay getClockDisplay(){
-        return clock;
-    }
+
 }
