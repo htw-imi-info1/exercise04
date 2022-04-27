@@ -1,3 +1,9 @@
+
+To get a reference to the ClockDisplay in the BlueJ object bench:
+
+Clock clock = new Clock();
+clock.getClockDisplay()
+
 Project: clock-display-with-GUI
 Authors: Michael Kölling and David J. Barnes
 
